@@ -1,0 +1,38 @@
+version: "2.4"
+services:
+  gpu:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '8888:8888'
+    volumes:
+      - type: bind
+        source: .
+        target: /projects/burg2021_learning-divisive-normalization
+        bind:
+          propagation: shared
+      - type: bind
+        source: ./data
+        target: /data
+        bind:
+          propagation: shared
+    runtime: nvidia
+    environment:
+      - JUPYTER_TOKEN=set_your_token
+      - USER=burg
+      - NB_UID=617278
+      - NB_USER=burg
+      - NB_GID=47162
+      - NB_GROUP=ECKERLAB
+      - HOME=/home/burg
+      - DISPLAY=$DISPLAY
+      - NVIDIA_VISIBLE_DEVICES=0
+      - GPU=0
+      - JUPYTER_ENABLE_LAB=yes
+      - GRANT_SUDO=yes
+      - CHOWN_HOME=yes
+    container_name: burg2021_learning-divisive-normalization
+    shm_size: 128G
+    user: root
+    working_dir: /projects

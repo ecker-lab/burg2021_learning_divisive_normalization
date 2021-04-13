@@ -1,0 +1,9 @@
+# Ignore large directories so they won't be send to docker deamon during build
+cnn3
+divisive_3x3_surround_net
+divisive_5x5_surround_net
+divisive_7x7_surround_net
+divisive_net
+nonspecific_divisive_net
+subunit_net
+data
