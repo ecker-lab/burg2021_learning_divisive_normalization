@@ -252,15 +252,9 @@ class Net:
                     idx = (batch_idx * batches) + np.arange(0, batches)
 
                 feed_dict = {
-                    self.images: images[
-                        idx,
-                    ],
-                    self.responses: responses[
-                        idx,
-                    ],
-                    self.real_responses: real_responses[
-                        idx,
-                    ],
+                    self.images: images[idx],
+                    self.responses: responses[idx],
+                    self.real_responses: real_responses[idx],
                     self.is_training: False,
                 }
                 res = self.session.run(ops, feed_dict)
@@ -379,6 +373,7 @@ class Net:
 
 
 class ConvSubunitNetOutputNonlin(Net):
+    """Subunit model"""
     def __init__(
         self,
         filter_sizes,
@@ -519,6 +514,7 @@ class ConvSubunitNetOutputNonlin(Net):
 
 
 class ConvNet(Net):
+    """Convolutional neural network"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.conv = []
@@ -637,6 +633,7 @@ class ConvNet(Net):
 
 
 class DivisiveNetOutputNonlin(Net):
+    """Full divisive normalization model."""
     def __init__(
         self,
         filter_sizes,
@@ -853,6 +850,7 @@ class DivisiveNetOutputNonlin(Net):
 
 
 class DivisiveNetUnspecificOutputNonlin(Net):
+    """Unspecific divisive normalization model"""
     def __init__(
         self,
         filter_sizes,

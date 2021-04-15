@@ -14,6 +14,9 @@ FILE = "cadena_ploscb_data.pkl"
 class Dataset:
     @staticmethod
     def load_data(file_name=FILE):
+        """
+        Load dataset pickle and return the contained dict.
+        """
         file_path = os.path.join(DATA_PATH, file_name)
         with open(file_path, "rb") as g:
             return pickle.load(g)
@@ -22,7 +25,7 @@ class Dataset:
     def manage_repeats(data_dict):
         """
         This function takes the sessions with only two repeats and duplicates them
-        to match those with four replacing the nans in the
+        to match those with four repeats replacing the nans in the dict.
         """
         responses = data_dict["responses"].copy()
         idx_two_reps = data_dict["repetitions"] == 2
@@ -132,21 +135,13 @@ class MonkeySubDataset:
         idx_trn = np.array([True if x in types_train else False for x in self.types])
         idx_tst = np.array([True if x in types_test else False for x in self.types_test])
 
-        self.images = self.images[
-            idx_trn,
-        ]
-        self.images_test = self.images_test[
-            idx_tst,
-        ]
+        self.images = self.images[idx_trn]
+        self.images_test = self.images_test[idx_tst]
 
-        self.responses = self.responses[
-            idx_trn,
-        ]
+        self.responses = self.responses[idx_trn]
         self.responses_test = self.responses_test[:, idx_tst, :]
 
-        self.real_resps = self.real_resps[
-            idx_trn,
-        ]
+        self.real_resps = self.real_resps[idx_trn]
         self.real_resps_test = self.real_resps_test[:, idx_tst, :]
 
         self.image_ids = self.image_ids[idx_trn]
@@ -173,50 +168,12 @@ class MonkeySubDataset:
         self.subject_id = data["subject_id"]
         self.repetitions = data["repetitions"]
 
-    def val(self):
-        """Get validation set.
-
-        Returns:
-            np.array, np.array, np.array: Returns validation images, responses and real responses
-                (if response of a neuron was not recorded for an image, the according real responses value is 0)
-        """
-
-        return (
-            self.images[self.val_idx],
-            self.responses[self.val_idx],
-            self.real_resps[self.val_idx],
-        )
-
-    def train(self):
-        """Get training set.
-
-        Returns:
-            np.array, np.array, np.array: Returns training images, responses and real responses
-                (if response of a neuron was not recorded for an image, the according real responses value is 0)
-        """
-
-        return (
-            self.images[self.train_idx],
-            self.responses[self.train_idx],
-            self.real_resps[self.train_idx],
-        )
-
     def nanarray(self, real_resps, resps):
         """Inserts nan at every position in resps where corresponding positions in real_resps are 0.
         Hence, leading to an array of resps where non-real responses have value nan.
         """
 
         return np.where(real_resps, resps, np.nan)
-
-    def test(self):
-        """Get test set.
-
-        Returns:
-            np.array, np.array, np.array: Returns test images, responses and real responses
-                (if response of a neuron was not recorded for an image, the according real responses value is 0)
-        """
-
-        return self.images_test, self.responses_test, self.real_resps_test
 
     def minibatch(self, batch_size):
         """Returns a minibatch of training images
@@ -241,3 +198,41 @@ class MonkeySubDataset:
     def next_epoch(self):
         self.minibatch_idx = 0
         self.train_perm = np.random.permutation(self.num_train_samples)
+
+    def train(self):
+        """Get training set.
+
+        Returns:
+            np.array, np.array, np.array: Returns training images, responses and real responses
+                (if response of a neuron was not recorded for an image, the according real responses value is 0)
+        """
+
+        return (
+            self.images[self.train_idx],
+            self.responses[self.train_idx],
+            self.real_resps[self.train_idx],
+        )
+
+    def val(self):
+        """Get validation set.
+
+        Returns:
+            np.array, np.array, np.array: Returns validation images, responses and real responses
+                (if response of a neuron was not recorded for an image, the according real responses value is 0)
+        """
+
+        return (
+            self.images[self.val_idx],
+            self.responses[self.val_idx],
+            self.real_resps[self.val_idx],
+        )
+
+    def test(self):
+        """Get test set.
+
+        Returns:
+            np.array, np.array, np.array: Returns test images, responses and real responses
+                (if response of a neuron was not recorded for an image, the according real responses value is 0)
+        """
+
+        return self.images_test, self.responses_test, self.real_resps_test

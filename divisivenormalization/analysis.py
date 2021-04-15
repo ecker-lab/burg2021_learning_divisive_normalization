@@ -107,8 +107,6 @@ def angles_circ_var(features, threshold=0.2):
 
     return angles
 
-    """compute difference in angles. Return angle_diff as float[,]"""
-
 
 def angle_diff(angles):
     """Compute pairwise orientation differences.
@@ -187,8 +185,7 @@ def norm_input(pooled, p):
     pooled_avg = np.expand_dims(pooled_avg, -1)
 
     p = np.squeeze(p)
-    # weight * activity
-    contrib = p * pooled_avg
+    contrib = p * pooled_avg  # weight * activity
 
     return contrib
 
@@ -316,8 +313,6 @@ def plot_contribution_matrix_chan_first(
 
 
 def cohens_d(x1, x2):
-    """Compute Cohen's d."""
-
     x1 = np.array(x1)
     x2 = np.array(x2)
 

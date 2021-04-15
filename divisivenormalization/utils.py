@@ -9,6 +9,8 @@ import time
 
 import ast
 import pandas as pd
+from colorsys import rgb_to_hls, hls_to_rgb
+
 
 from divisivenormalization.models import (
     DivisiveNetOutputNonlin,
@@ -286,20 +288,12 @@ def get_weights(dn):
                 idx = (batch_idx * batches) + np.arange(0, batches)
 
             feed_dict = {
-                dn.images: images[
-                    idx,
-                ],
-                dn.responses: responses[
-                    idx,
-                ],
-                dn.real_responses: real_responses[
-                    idx,
-                ],
+                dn.images: images[idx],
+                dn.responses: responses[idx],
+                dn.real_responses: real_responses[idx],
                 dn.is_training: False,
             }
-            pooled[
-                idx,
-            ] = dn.pooled.eval(feed_dict)
+            pooled[idx] = dn.pooled.eval(feed_dict)
 
     return features_chanfirst, p, pooled, readout_feat_w, u, v, dn_exponent
 
@@ -317,9 +311,6 @@ def pkl_load(run_no, name, path):
     with open(fpath, "rb") as f:
         var = pickle.load(f)
     return var
-
-
-from colorsys import rgb_to_hls, hls_to_rgb
 
 
 def adjust_color_lightness(r, g, b, factor):
