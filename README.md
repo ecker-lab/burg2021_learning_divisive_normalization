@@ -1,6 +1,6 @@
 # Code for Burg et al. (2021): Learning Divisive Normalization in Primary Visual Cortex
 
-This repository contains code for the paper [Max F. Burg, Santiago A. Cadena, George H. Denfield, Edgar Y. Walker, Andreas S. Tolias, Matthias Bethge, Alexander S. Ecker (2021): Learning Divisive Normalization in Primary Visual Cortex](https://doi.org/10.1371/journal.pcbi.1009028)
+This repository contains code for the paper [Burg MF, Cadena SA, Denfield GH, Walker EY, Tolias AS, et al. (2021) Learning divisive normalization in primary visual cortex. PLOS Computational Biology 17(6): e1009028.](https://doi.org/10.1371/journal.pcbi.1009028)
 
 To execute the project code:
 
